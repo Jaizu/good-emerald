@@ -722,7 +722,7 @@ s8 DoMysteryGiftYesNo(u8 *textState, u16 * windowId, bool8 yesNoBoxPlacement, co
 // Handle the "Receive/Send/Toss" menu that appears when selecting Wonder Card/News
 static s32 HandleGiftSelectMenu(u8 *textState, u16 * windowId, bool32 cannotToss, bool32 cannotSend)
 {
-    struct WindowTemplate windowTemplate;
+    struct WindowTemplate UNUSED windowTemplate;
     s32 input;
 
     switch (*textState)
