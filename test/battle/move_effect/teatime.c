@@ -96,7 +96,7 @@ SINGLE_BATTLE_TEST("Teatime causes other Pokemon to consume their Berry even if 
 
 DOUBLE_BATTLE_TEST("Teatime causes all Pokémon to consume their berry")
 {
-    struct BattlePokemon *user;
+    struct BattlePokemon *user = NULL;
     PARAMETRIZE { user = playerLeft; }
     PARAMETRIZE { user = playerRight; }
     PARAMETRIZE { user = opponentLeft; }
