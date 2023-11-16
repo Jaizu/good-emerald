@@ -3682,21 +3682,22 @@ static void DoBattleIntro(void)
         {
             for (battler = 0; battler < gBattlersCount; battler++)
             {
-            if (GetBattlerSide(gActiveBattler) == B_SIDE_OPPONENT)
-            {
-                if (gBattleTypeFlags & (BATTLE_TYPE_GHOST | BATTLE_TYPE_GHOST_UNVEILED))
+                if (GetBattlerSide(battler) == B_SIDE_OPPONENT)
                 {
-                    if (!IS_BATTLE_TYPE_GHOST_WITHOUT_SCOPE(gBattleTypeFlags))
-                        HandleSetPokedexFlag(SpeciesToNationalPokedexNum(gBattleMons[gActiveBattler].species), FLAG_SET_SEEN, gBattleMons[gActiveBattler].personality);
-                }
-                else if (!(gBattleTypeFlags & (BATTLE_TYPE_EREADER_TRAINER
-                                          | BATTLE_TYPE_FRONTIER
-                                          | BATTLE_TYPE_LINK
-                                          | BATTLE_TYPE_GHOST
-                                          | BATTLE_TYPE_RECORDED_LINK
-                                          | BATTLE_TYPE_TRAINER_HILL)))
-                {
-                    HandleSetPokedexFlag(SpeciesToNationalPokedexNum(gBattleMons[battler].species), FLAG_SET_SEEN, gBattleMons[battler].personality);
+                    if (gBattleTypeFlags & (BATTLE_TYPE_GHOST | BATTLE_TYPE_GHOST_UNVEILED))
+                    {
+                        if (!IS_BATTLE_TYPE_GHOST_WITHOUT_SCOPE(gBattleTypeFlags))
+                            HandleSetPokedexFlag(SpeciesToNationalPokedexNum(gBattleMons[battler].species), FLAG_SET_SEEN, gBattleMons[battler].personality);
+                    }
+                    else if (!(gBattleTypeFlags & (BATTLE_TYPE_EREADER_TRAINER
+                                            | BATTLE_TYPE_FRONTIER
+                                            | BATTLE_TYPE_LINK
+                                            | BATTLE_TYPE_GHOST
+                                            | BATTLE_TYPE_RECORDED_LINK
+                                            | BATTLE_TYPE_TRAINER_HILL)))
+                    {
+                        HandleSetPokedexFlag(SpeciesToNationalPokedexNum(gBattleMons[battler].species), FLAG_SET_SEEN, gBattleMons[battler].personality);
+                    }
                 }
             }
 
@@ -3990,7 +3991,7 @@ u8 IsRunningFromBattleImpossible(u32 battler)
 
     if (IS_BATTLE_TYPE_GHOST_WITHOUT_SCOPE(gBattleTypeFlags))
     {
-        if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
+        if (GetBattlerSide(battler) == B_SIDE_PLAYER)
             return BATTLE_RUN_SUCCESS;
     }
 

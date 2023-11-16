@@ -2419,10 +2419,10 @@ void BtlController_HandleLoadMonSprite(u32 battler, void (*controllerCallback)(u
 
     if (gBattleTypeFlags & BATTLE_TYPE_GHOST)
     {
-        DecompressGhostFrontPic(&gEnemyParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);
-        y = GetGhostSpriteDefault_Y(gActiveBattler);
-        gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].triedShinyMonAnim = TRUE;
-        gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].finishedShinyMonAnim = TRUE;
+        DecompressGhostFrontPic(&gEnemyParty[gBattlerPartyIndexes[battler]], battler);
+        y = GetGhostSpriteDefault_Y(battler);
+        gBattleSpritesDataPtr->healthBoxesData[battler].triedShinyMonAnim = TRUE;
+        gBattleSpritesDataPtr->healthBoxesData[battler].finishedShinyMonAnim = TRUE;
     }
     else
     {

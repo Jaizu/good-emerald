@@ -69,7 +69,6 @@ static void SpriteCB_Ball_Release_Step(struct Sprite *);
 static void SpriteCB_Ball_Capture_Step(struct Sprite *);
 static void MakeCaptureStars(struct Sprite *);
 static void SpriteCB_Ball_FadeOut(struct Sprite *);
-static void DestroySpriteAfterOneFrame(struct Sprite *);
 static void LoadBallParticleGfx(u8);
 static void SpriteCB_CaptureStar_Flicker(struct Sprite *);
 static void SpriteCB_Ball_Release_Wait(struct Sprite *);
@@ -1663,7 +1662,7 @@ static void SpriteCB_Ball_FadeOut(struct Sprite *sprite)
 
 #define sFrame data[0]
 
-static void DestroySpriteAfterOneFrame(struct Sprite *sprite)
+void DestroySpriteAfterOneFrame(struct Sprite *sprite)
 {
     if (sprite->sFrame == 0)
         sprite->sFrame = -1;

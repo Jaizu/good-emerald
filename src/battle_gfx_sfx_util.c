@@ -654,7 +654,6 @@ void DecompressGhostFrontPic(struct Pokemon *unused, u8 battlerId)
     void *buffer;
     u8 position = GetBattlerPosition(battlerId);
 
-    // JTODO: This doesn't build, fix me
     LZ77UnCompWram(gGhostFrontPic, gMonSpritesGfxPtr->sprites.ptr[position]);
     palOffset = 0x100 + 16 * battlerId;
     buffer = AllocZeroed(0x400);
@@ -911,21 +910,22 @@ void HandleSpeciesGfxDataChange(u8 battlerAtk, u8 battlerDef, bool32 megaEvo, bo
         targetSpecies = GetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerAtk]], MON_DATA_SPECIES);
         personalityValue = GetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerAtk]], MON_DATA_PERSONALITY);
         otId = GetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerAtk]], MON_DATA_OT_ID);
-        HandleLoadSpecialPokePic_DontHandleDeoxys(&gMonFrontPicTable[targetSpecies],
-                                                  gMonSpritesGfxPtr->sprites.ptr[position],
-                                                  targetSpecies,
-                                                  personalityValue);
+        HandleLoadSpecialPokePic(TRUE,
+                                gMonSpritesGfxPtr->sprites.ptr[position],
+                                targetSpecies,
+                                personalityValue);
         src = gMonSpritesGfxPtr->sprites.ptr[position];
         dst = (void *)(VRAM + 0x10000 + gSprites[gBattlerSpriteIds[battlerAtk]].oam.tileNum * 32);
         DmaCopy32(3, src, dst, 0x800);
         paletteOffset = 0x100 + battlerAtk * 16;
         lzPaletteData = GetMonSpritePalFromSpeciesAndPersonality(targetSpecies, otId, personalityValue);
-        buffer = AllocZeroed(0x400);
-        LZDecompressWram(lzPaletteData, buffer);
-        LoadPalette(buffer, paletteOffset, 32);
-        Free(buffer);
+        // JTODO: Is this even needed?
+        //buffer = AllocZeroed(0x400);
+        //LZDecompressWram(lzPaletteData, buffer);
+        //LoadPalette(buffer, paletteOffset, 32);
+        //Free(buffer);
         gSprites[gBattlerSpriteIds[battlerAtk]].y = GetBattlerSpriteDefault_Y(battlerAtk);
-        StartSpriteAnim(&gSprites[gBattlerSpriteIds[battlerAtk]], gBattleMonForms[battlerAtk]);
+        StartSpriteAnim(&gSprites[gBattlerSpriteIds[battlerAtk]], 0);
         SetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerAtk]], MON_DATA_NICKNAME, gSpeciesNames[targetSpecies]);
         UpdateNickInHealthbox(gHealthboxSpriteIds[battlerAtk], &gEnemyParty[gBattlerPartyIndexes[battlerAtk]]);
         TryAddPokeballIconToHealthbox(gHealthboxSpriteIds[battlerAtk], 1);

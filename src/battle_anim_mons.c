@@ -2536,5 +2536,5 @@ static void GhostBallDodge2(struct Sprite *sprite)
     sprite->data[0] = 0;
     sprite->callback = DestroySpriteAfterOneFrame;
     gDoingBattleAnim = FALSE;
-    UpdateOamPriorityInAllHealthboxes(1);
+    UpdateOamPriorityInAllHealthboxes(1, FALSE);
 }

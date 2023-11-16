@@ -96,9 +96,16 @@ Debug_BoxFilledMessage_Text:
 	.string "Storage boxes filled!$"
 
 Debug_EventScript_Script_1::
+	setflag FLAG_UNUSED_0x04A
+	givemon SPECIES_DRAGONITE, 100, ITEM_NONE
+	giveitem ITEM_SILPH_SCOPE
+	special StartMarowakBattle
 	end
 
 Debug_EventScript_Script_2::
+	setflag FLAG_UNUSED_0x04A
+	givemon SPECIES_DRAGONITE, 100, ITEM_NONE
+	special StartMarowakBattle
 	end
 
 Debug_EventScript_Script_3::

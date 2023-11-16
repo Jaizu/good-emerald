@@ -421,30 +421,24 @@ static void CreateBattleStartTask_Debug(u8 transition, u16 song)
 #undef tState
 #undef tTransition
 
-static bool8 CheckSilphScopeInPokemonTower(u16 mapGroup, u16 mapNum) // JTODO: Should probably get refactored and better named
+static bool8 CheckSilphScopeInPokemonTower(void) // JTODO: Get a better name for it
 {
-    /*
-    if (mapGroup == MAP_GROUP(POKEMON_TOWER_1F)
-     && (mapNum == MAP_NUM(POKEMON_TOWER_1F)
-      || mapNum == MAP_NUM(POKEMON_TOWER_2F)
-      || mapNum == MAP_NUM(POKEMON_TOWER_3F)
-      || mapNum == MAP_NUM(POKEMON_TOWER_4F)
-      || mapNum == MAP_NUM(POKEMON_TOWER_5F)
-      || mapNum == MAP_NUM(POKEMON_TOWER_6F)
-      || mapNum == MAP_NUM(POKEMON_TOWER_7F))
+    #if B_FLAG_GHOST_BATTLE != 0
+    if (FlagGet(B_FLAG_GHOST_BATTLE)
      && !(CheckBagHasItem(ITEM_SILPH_SCOPE, 1)))
-     */
-    if !(CheckBagHasItem(ITEM_SILPH_SCOPE, 1))
         return TRUE;
     else
         return FALSE;
+    #else
+    return FALSE;
+    #endif
 }
 
 void BattleSetup_StartWildBattle(void)
 {
     if (GetSafariZoneFlag())
         DoSafariBattle();
-    else if (CheckSilphScopeInPokemonTower(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum))
+    else if (CheckSilphScopeInPokemonTower())
         DoGhostBattle();
     else
         DoStandardWildBattle(FALSE);
