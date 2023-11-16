@@ -522,4 +522,9 @@ extern const u8 BattleScript_DynamaxBegins[];
 extern const u8 BattleScript_DynamaxEnds[];
 extern const u8 BattleScript_MoveBlockedByDynamax[];
 
+extern const u8 BattleScript_SilphScopeUnveiled[];
+extern const u8 BattleScript_GhostGetOutGetOut[];
+extern const u8 BattleScript_TooScaredToMove[];
+extern const u8 BattleScript_GhostBallDodge[];
+
 #endif // GUARD_BATTLE_SCRIPTS_H

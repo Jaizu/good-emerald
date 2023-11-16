@@ -559,6 +559,9 @@
 #define B_ANIM_DYNAMAX_GROWTH           39
 #define B_ANIM_MAX_SET_WEATHER          40
 #define B_ANIM_SYRUP_BOMB_SPEED_DROP    41
+#define B_ANIM_GHOST_GET_OUT            42
+#define B_ANIM_SILPH_SCOPED             43
+#define B_ANIM_MON_SCARED               44
 
 // special animations table (gBattleAnims_Special)
 #define B_ANIM_LVL_UP                   0

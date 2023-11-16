@@ -452,6 +452,11 @@ static const u8 sText_SpDefense[] = _("Sp. Def");
 static const u8 sText_Accuracy[] = _("accuracy");
 static const u8 sText_Evasiveness[] = _("evasiveness");
 
+static const u8 sText_GhostAppearedCantId[] = _("The Ghost appeared!\pDarn!\nThe Ghost can't be ID'd!\p");
+static const u8 sText_TheGhostAppeared[] = _("The Ghost appeared!\p");
+static const u8 sText_SilphScopeUnveil[] = _("Silph Scope unveiled the Ghost's\nidentity!"); // Should be refactored to support other items
+static const u8 sText_TheGhostWas[] = _("The Ghost was Marowak!\p\n"); // Should be refactored to support other Pokémon
+
 const u8 *const gStatNamesTable[NUM_BATTLE_STATS] =
 {
     sText_HP, sText_Attack, sText_Defense,
@@ -514,6 +519,8 @@ static const u8 sText_ItemAllowsOnlyYMove[] = _("{B_LAST_ITEM} allows the\nuse o
 static const u8 sText_PkmnHungOnWithX[] = _("{B_DEF_NAME_WITH_PREFIX} hung on\nusing its {B_LAST_ITEM}!");
 const u8 gText_EmptyString3[] = _("");
 static const u8 sText_YouThrowABallNowRight[] = _("You throw a BALL now, right?\nI… I'll do my best!");
+static const u8 sText_TooScaredToMove[] = _("{B_ATK_NAME_WITH_PREFIX} is too scared to move!");
+static const u8 sText_GetOutGetOut[] = _("Ghost: Get out…… Get out……");
 
 // early declaration of strings
 static const u8 sText_PkmnIncapableOfPower[];
@@ -1501,6 +1508,10 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_ULTRABURSTCOMPLETED - BATTLESTRINGS_TABLE_START] = sText_UltraBurstCompleted,
     [STRINGID_TEAMGAINEDEXP - BATTLESTRINGS_TABLE_START] = sText_TeamGainedEXP,
     [STRINGID_TARGETCOVEREDINSTICKYCANDYSYRUP - BATTLESTRINGS_TABLE_START] = sText_TargetCoveredInStickyCandySyrup,
+    [STRINGID_SILPHSCOPEUNVEILED - BATTLESTRINGS_TABLE_START] = sText_SilphScopeUnveil,
+    [STRINGID_GHOSTWASMAROWAK - BATTLESTRINGS_TABLE_START]               = sText_TheGhostWas,
+    [STRINGID_MONTOOSCAREDTOMOVE - BATTLESTRINGS_TABLE_START]            = sText_TooScaredToMove,
+    [STRINGID_GHOSTGETOUTGETOUT - BATTLESTRINGS_TABLE_START]             = sText_GetOutGetOut,
 };
 
 const u16 gTrainerUsedItemStringIds[] =
@@ -2766,6 +2777,13 @@ void BufferStringBattle(u16 stringID, u32 battler)
         }
         else
         {
+            if (gBattleTypeFlags & BATTLE_TYPE_GHOST)
+            {
+                if (gBattleTypeFlags & BATTLE_TYPE_GHOST_UNVEILED)
+                    stringPtr = sText_TheGhostAppeared;
+                else
+                    stringPtr = sText_GhostAppearedCantId;
+            }
             if (gBattleTypeFlags & BATTLE_TYPE_LEGENDARY)
                 stringPtr = sText_LegendaryPkmnAppeared;
             else if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE && IsValidForBattle(&gEnemyParty[gBattlerPartyIndexes[GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT)]]))

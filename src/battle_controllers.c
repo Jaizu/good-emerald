@@ -2415,13 +2415,26 @@ void BtlController_HandleLoadMonSprite(u32 battler, void (*controllerCallback)(u
 {
     struct Pokemon *party = GetBattlerParty(battler);
     u16 species = GetMonData(&party[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES);
+    u32 y;
 
-    BattleLoadMonSpriteGfx(&party[gBattlerPartyIndexes[battler]], battler);
+    if (gBattleTypeFlags & BATTLE_TYPE_GHOST)
+    {
+        DecompressGhostFrontPic(&gEnemyParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);
+        y = GetGhostSpriteDefault_Y(gActiveBattler);
+        gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].triedShinyMonAnim = TRUE;
+        gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].finishedShinyMonAnim = TRUE;
+    }
+    else
+    {
+        BattleLoadMonSpriteGfx(&party[gBattlerPartyIndexes[battler]], battler);
+        y = GetBattlerSpriteDefault_Y(battler);
+    }
+
     SetMultiuseSpriteTemplateToPokemon(species, GetBattlerPosition(battler));
 
     gBattlerSpriteIds[battler] = CreateSprite(&gMultiuseSpriteTemplate,
                                                GetBattlerSpriteCoord(battler, BATTLER_COORD_X_2),
-                                               GetBattlerSpriteDefault_Y(battler),
+                                               y,
                                                GetBattlerSpriteSubpriority(battler));
 
     gSprites[gBattlerSpriteIds[battler]].x2 = -DISPLAY_WIDTH;
@@ -2430,7 +2443,8 @@ void BtlController_HandleLoadMonSprite(u32 battler, void (*controllerCallback)(u
     gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = battler;
     StartSpriteAnim(&gSprites[gBattlerSpriteIds[battler]], 0);
 
-    SetBattlerShadowSpriteCallback(battler, species);
+    if (!(gBattleTypeFlags & BATTLE_TYPE_GHOST))
+        SetBattlerShadowSpriteCallback(battler, species);
 
     gBattlerControllerFuncs[battler] = controllerCallback;
 }

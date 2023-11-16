@@ -169,6 +169,8 @@ u8 GetBattlerAtPosition(u8 position);
 void ConvertPosDataToTranslateLinearData(struct Sprite *sprite);
 void InitAnimFastLinearTranslationWithSpeedAndPos(struct Sprite *sprite);
 
+u8 GetGhostSpriteDefault_Y(u8 battlerId);
+
 enum
 {
     BATTLER_COORD_X,

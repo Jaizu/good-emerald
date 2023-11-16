@@ -5,6 +5,7 @@
 #include "battle_anim.h"
 #include "constants/battle_anim.h"
 #include "battle_interface.h"
+#include "decompress.h"
 #include "main.h"
 #include "dma3.h"
 #include "malloc.h"
@@ -647,6 +648,22 @@ void BattleGfxSfxDummy2(u16 species)
 {
 }
 
+void DecompressGhostFrontPic(struct Pokemon *unused, u8 battlerId)
+{
+    u16 palOffset;
+    void *buffer;
+    u8 position = GetBattlerPosition(battlerId);
+
+    // JTODO: This doesn't build, fix me
+    LZ77UnCompWram(gGhostFrontPic, gMonSpritesGfxPtr->sprites.ptr[position]);
+    palOffset = 0x100 + 16 * battlerId;
+    buffer = AllocZeroed(0x400);
+    LZDecompressWram(gGhostPalette, buffer);
+    LoadPalette(buffer, palOffset, 0x20);
+    LoadPalette(buffer, 0x80 + 16 * battlerId, 0x20);
+    Free(buffer);
+}
+
 void DecompressTrainerFrontPic(u16 frontPicId, u8 battler)
 {
     u8 position = GetBattlerPosition(battler);
@@ -867,7 +884,7 @@ void CopyBattleSpriteInvisibility(u8 battler)
     gBattleSpritesDataPtr->battlerData[battler].invisible = gSprites[gBattlerSpriteIds[battler]].invisible;
 }
 
-void HandleSpeciesGfxDataChange(u8 battlerAtk, u8 battlerDef, bool32 megaEvo, bool8 trackEnemyPersonality)
+void HandleSpeciesGfxDataChange(u8 battlerAtk, u8 battlerDef, bool32 megaEvo, bool8 trackEnemyPersonality, bool8 isGhost)
 {
     u32 personalityValue, otId, position, paletteOffset, targetSpecies;
     const void *lzPaletteData, *src;
@@ -884,6 +901,34 @@ void HandleSpeciesGfxDataChange(u8 battlerAtk, u8 battlerDef, bool32 megaEvo, bo
                                  gMonSpritesGfxPtr->sprites.ptr[position],
                                  targetSpecies,
                                  gContestResources->moveAnim->targetPersonality);
+    }
+    else if (isGhost) // Ghost unveiled with Silph Scope
+    {
+        const void *src;
+        void *dst;
+
+        position = GetBattlerPosition(battlerAtk);
+        targetSpecies = GetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerAtk]], MON_DATA_SPECIES);
+        personalityValue = GetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerAtk]], MON_DATA_PERSONALITY);
+        otId = GetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerAtk]], MON_DATA_OT_ID);
+        HandleLoadSpecialPokePic_DontHandleDeoxys(&gMonFrontPicTable[targetSpecies],
+                                                  gMonSpritesGfxPtr->sprites.ptr[position],
+                                                  targetSpecies,
+                                                  personalityValue);
+        src = gMonSpritesGfxPtr->sprites.ptr[position];
+        dst = (void *)(VRAM + 0x10000 + gSprites[gBattlerSpriteIds[battlerAtk]].oam.tileNum * 32);
+        DmaCopy32(3, src, dst, 0x800);
+        paletteOffset = 0x100 + battlerAtk * 16;
+        lzPaletteData = GetMonSpritePalFromSpeciesAndPersonality(targetSpecies, otId, personalityValue);
+        buffer = AllocZeroed(0x400);
+        LZDecompressWram(lzPaletteData, buffer);
+        LoadPalette(buffer, paletteOffset, 32);
+        Free(buffer);
+        gSprites[gBattlerSpriteIds[battlerAtk]].y = GetBattlerSpriteDefault_Y(battlerAtk);
+        StartSpriteAnim(&gSprites[gBattlerSpriteIds[battlerAtk]], gBattleMonForms[battlerAtk]);
+        SetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerAtk]], MON_DATA_NICKNAME, gSpeciesNames[targetSpecies]);
+        UpdateNickInHealthbox(gHealthboxSpriteIds[battlerAtk], &gEnemyParty[gBattlerPartyIndexes[battlerAtk]]);
+        TryAddPokeballIconToHealthbox(gHealthboxSpriteIds[battlerAtk], 1);
     }
     else
     {

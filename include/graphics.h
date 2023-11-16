@@ -11701,4 +11701,7 @@ extern const u8 gMailTilemap_Retro[];
 extern const u8 gMonMarkingsMenu_Gfx[];
 extern const u16 gMonMarkingsMenu_Pal[];
 
+extern const u32 gGhostFrontPic[];
+extern const u32 gGhostPalette[];
+
 #endif //GUARD_GRAPHICS_H

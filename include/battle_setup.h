@@ -71,4 +71,6 @@ u16 CountBattledRematchTeams(u16 trainerId);
 void DoStandardWildBattle_Debug(void);
 void BattleSetup_StartTrainerBattle_Debug(void);
 
+void StartMarowakBattle(void);
+
 #endif // GUARD_BATTLE_SETUP_H
