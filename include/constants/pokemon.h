@@ -191,6 +191,14 @@
 #define FRIENDSHIP_200_TO_254  5
 #define FRIENDSHIP_MAX         6
 
+// Constants for GetBattlerAffectionHearts (based on friendship value)
+#define AFFECTION_NO_HEARTS     0 // 0-79 friendship
+#define AFFECTION_ONE_HEART     1 // 80-129 friendship
+#define AFFECTION_TWO_HEARTS    2 // 130-179 friendship
+#define AFFECTION_THREE_HEARTS  3 // 180-219 friendship
+#define AFFECTION_FOUR_HEARTS   4 // 220-254 friendship
+#define AFFECTION_FIVE_HEARTS   5 // Max friendship
+
 // Friendship value that the majority of species use.
 #if P_UPDATED_FRIENDSHIP >= GEN_8
 #define STANDARD_FRIENDSHIP 50
@@ -332,10 +340,11 @@
 #define SPECIES_FLAG_ALOLAN_FORM        (1 << 5)
 #define SPECIES_FLAG_GALARIAN_FORM      (1 << 6)
 #define SPECIES_FLAG_HISUIAN_FORM       (1 << 7)
-#define SPECIES_FLAG_ALL_PERFECT_IVS    (1 << 8)
-#define SPECIES_FLAG_CANNOT_BE_TRADED   (1 << 9)
-#define SPECIES_FLAG_ULTRA_BURST        (1 << 10)
-#define SPECIES_FLAG_PARADOX            (1 << 11)
+#define SPECIES_FLAG_PALDEAN_FORM       (1 << 8)
+#define SPECIES_FLAG_ALL_PERFECT_IVS    (1 << 9)
+#define SPECIES_FLAG_CANNOT_BE_TRADED   (1 << 10)
+#define SPECIES_FLAG_ULTRA_BURST        (1 << 11)
+#define SPECIES_FLAG_PARADOX            (1 << 12)
 
 #define LEGENDARY_PERFECT_IV_COUNT 3
 
